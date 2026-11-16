@@ -79,6 +79,10 @@ label input,label select{margin-top:4px;color:var(--ink)}
 }
 @media (max-width:359px){.acts .btn{flex:1 1 40%}.acts .btn.main{flex-basis:100%}}
 @media(prefers-reduced-motion:no-preference){.spine:active,.card:active{transform:scale(.98)}}
+.confirm{max-width:420px;text-align:center;border-radius:22px;margin:auto;padding:26px 22px}
+.confirm h2{font-size:22px}
+.confirm p{margin:0 0 18px;color:var(--mute);font-family:var(--serif);font-style:italic}
+.btn.danger{background:var(--wine);border-color:var(--wine);color:var(--on-forest)}
 </style>
 </head>
 <body>
@@ -121,7 +125,14 @@ label input,label select{margin-top:4px;color:var(--ink)}
     </div>
   </div>
 </dialog>
-
+<dialog id="confirmDlg" class="confirm">
+  <h2>Would you like to remove this book?</h2>
+  <p id="confirmText"></p>
+  <div class="acts">
+    <button class="btn" id="confirmNo" type="button">No</button>
+    <button class="btn main danger" id="confirmYes" type="button">Yes</button>
+  </div>
+</dialog>
 <script>
 const SOURCES=['Library','Bought','Borrowed','Gift','E-book','Audiobook','Other'];
 const STATUSES=['Want to read','Reading','Finished','Paused','Dropped'];
@@ -166,7 +177,18 @@ $('save').onclick=()=>{
   if(editing)Object.assign(editing,d);else books.unshift({id:Date.now().toString(36),...d});
   save();render();$('dlg').close();
 };
-$('del').onclick=()=>{if(editing&&confirm('Remove “'+editing.title+'” from your shelf?')){books=books.filter(b=>b!==editing);save();render();$('dlg').close()}};
+$('del').onclick=()=>{
+  if(!editing)return;
+  $('confirmText').textContent='“'+editing.title+'”';
+  $('confirmDlg').showModal();
+};
+$('confirmNo').onclick=()=>$('confirmDlg').close();
+$('confirmYes').onclick=()=>{
+  books=books.filter(b=>b!==editing);
+  save();render();
+  $('confirmDlg').close();
+  $('dlg').close();
+};
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-id]');if(t){openForm(t.dataset.id);return}
   const c=e.target.closest('[data-f]');if(c){filter=c.dataset.f;render()}
