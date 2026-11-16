@@ -131,10 +131,6 @@ const KEY='track-your-books:v1';
 let books=[],filter='All',editing=null;
 try{books=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){books=[]}
 if(!Array.isArray(books))books=[];
-if(!books.length){books=[
- {id:'a',title:'The Left Hand of Darkness',author:'Ursula K. Le Guin',main:'Science fiction',sub:'Social sci-fi',source:'Library',status:'Finished'},
- {id:'b',title:'Piranesi',author:'Susanna Clarke',main:'Fantasy',sub:'Literary fantasy',source:'Bought',status:'Reading'},
- {id:'c',title:'Pride and Prejudice',author:'Jane Austen',main:'Fiction',sub:'Classic romance',source:'Gift',status:'Want to read'}]}
 const $=id=>document.getElementById(id);
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(books))}catch(e){}};
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

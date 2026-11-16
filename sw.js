@@ -1,4 +1,4 @@
-const CACHE = 'book-tracker-v1';
+const CACHE = 'book-tracker-v2';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
